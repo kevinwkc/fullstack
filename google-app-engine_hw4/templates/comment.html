@@ -1,0 +1,27 @@
+<div class="comment">
+<!--del, update -ownpost else comment; like, unlike - other post;    -->
+  <div class="post-heading">
+    <div class="post-title">
+      Comment By: {{c.user}} 
+    </div>
+
+    <div class="post-date">
+      {{c.created.strftime("%b %d, %Y")}}
+    </div>
+  </div>
+
+  <div class="post-content">
+    {{c._render_text | safe}}
+  </div>
+
+    
+  <form method='post' action='/blog/delcomment'>
+  <input type='hidden' name='id' value='{{c.key().id()}}'>
+  <input type='submit' value='Delete'>
+  </form>
+  
+  <form method='get' action='/blog/editcomment'>
+  <input type='hidden' name='id' value='{{c.key().id()}}'>
+  <input type='submit' value='Edit'>
+  </form>
+</div>

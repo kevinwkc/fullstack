@@ -1,0 +1,48 @@
+<div class="post">
+<!--del, update -ownpost else comment; like, unlike - other post;    -->
+  <div class="post-heading">
+    <div class="post-title">
+      Post By: {{p.user}} - Subject: {{p.subject}}
+    </div>
+
+    <div class="post-date">
+      {{p.created.strftime("%b %d, %Y")}}
+    </div>
+  </div>
+
+  <div class="post-content">
+    {{p._render_text | safe}}
+  </div>
+  
+  <form method='post' action='/blog/delpost'>
+  <input type='hidden' name='id' value='{{p.key().id()}}'>
+  <input type='submit' value='Delete'>
+  </form>
+  
+  <form method='get' action='/blog/editpost'>
+  <input type='hidden' name='id' value='{{p.key().id()}}'>
+  <input type='submit' value='Edit'>
+  </form>
+  
+  <form method='get' action='/blog/newcomment'>
+  <input type='hidden' name='id' value='{{p.key().id()}}'>
+  <input type='submit' value='Comment'>  
+  </form>
+  
+  <form method='post' action='/blog/likepost'>
+  <input type='hidden' name='id' value='{{p.key().id()}}'>
+  <input type='submit' value='Like'> {{ like_cnt}}
+  </form>
+
+  <form method='post' action='/blog/unlikepost'>
+  <input type='hidden' name='id' value='{{p.key().id()}}'>
+  <input type='submit' value='Unlike'> {{ unlike_cnt }}
+  </form>  
+
+
+  </form>  
+</div>
+  {% for c in comments %}
+    {{ c.render() | safe }}
+    <br><br>
+  {% endfor %}
