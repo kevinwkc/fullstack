@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title>{% block title %}Catalog{% endblock %}</title>
+    {% block head %}
+    {% endblock %}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+		<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">   
+	</head>
+	<body>
+
+{% block header %}
+
+    <div class="container">
+    <div class="row">
+    <div class="col-lg-12">
+    <div class="header">
+      <a href="{{url_for('showCategory')}}"><h1>Catalog App</h1></a>
+      
+      <div class="greeting">
+      Hello, {% if login_session['username'] %}{{ login_session['username'] }}{% else %}Stranger{% endif %}!
+      
+      {% if login_session['username'] %}
+      <a href="{{ url_for('gdisconnect') }}"> Logout </a>    
+      {% else %}
+      <a href="{{ url_for('login') }}"> Login </a>
+      {% endif %}    
+      </div>
+    </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+
+{% block title %}Catalog{% endblock %}
+
+{% block page_content %}
+
+
+<div class='row'>
+
+<div class='col-xs-8'>
+<h1>Delete Item: {{ item.name }}</h1>
+
+    <div class="description">       
+        Description: {{ item.description }}
+    </div>
+    
+    <h3>Are you sure you want to delete?</h3>
+    <form action="{{ url_for('deleteItem', item=item.name) }}" method="post">
+    <input type='submit' value="Submit"/>
+    </form>
+
+</div>
+
+
+</div>
+
+{% endblock %}

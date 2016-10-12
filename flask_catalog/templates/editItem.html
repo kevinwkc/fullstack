@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+
+{% block title %}Catalog{% endblock %}
+
+{% block page_content %}
+
+
+<div class='row'>
+
+<div class='col-lg-8'>
+<h1>Edit Item</h1>
+
+<form action='{{ url_for('editItem', item=item.name, item_id=item.id ) }}' method='post'>
+<label>Title</label>
+<input type='text' name='name' value='{{item.name}}'>
+
+<label>Desciption</label>
+<input type='text' name='description' value='{{item.description}}'>
+
+<label>Category</label>
+<select name='category_id'>
+{% for c in cats %}
+<option value='{{c.id}}' {% if c.name == item.category.name %}selected{% endif %}>{{c.name}}</option>
+{% endfor %}
+</select>
+
+<input type='submit' value='Submit'>
+</form>
+
+</div>
+
+
+</div>
+
+{% endblock %}

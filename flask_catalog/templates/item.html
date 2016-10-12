@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+
+{% block title %}Catalog{% endblock %}
+
+{% block page_content %}
+
+
+<div class='row'>
+
+<div class='col-xs-8'>
+<h1>{{ item.name }}</h1>
+
+    <div class="description">       
+        Description: {{ item.description }}
+    </div>
+     {% if login_session['username'] %}
+       <form action="" method="">
+       <a href="javascript:;" onclick="parentNode.action='{{ url_for('editItem', item=item.name, item_id=item.id) }}';parentNode.method='get'; parentNode.submit();">Edit</a> | 
+       <a href="javascript:;" onclick="parentNode.action='{{ url_for('deleteItem', item=item.name) }}'; parentNode.method='get';parentNode.submit();">Delete</a>
+       <input type="hidden" name="id" value="{{ item.id }}"/>
+       </form>
+     {% endif %}
+</div>
+
+
+</div>
+
+{% endblock %}

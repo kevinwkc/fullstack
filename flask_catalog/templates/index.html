@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Catalog{% endblock %}
+
+{% block page_content %}
+
+
+<div class='row'>
+
+<article class='category col-xs-4'>
+<h3>Categories</h3>
+    {% for c in cats %}    
+       <a href="{{ url_for('showItem', category=c.name) }}">{{ c.name }}</a>
+    {% endfor %}
+</article>
+
+{% if latest %}
+  <article class='latest col-xs-8'>
+  {% if login_session['username'] %}
+  <a href="{{ url_for('addItem') }}">Add Item</a> 
+  <br/>
+  {% endif %}
+
+  <h3>Latest Items</h3>
+      {% for i in latest %}
+      <div class='itemCat'><a href="{{ url_for('descItem', category=i.category.name, item=i.name) }}">{{ i.name }}</a>
+      ({{i.category.name}})</div>    
+      {% endfor %}
+  </article>
+{% endif %}
+
+{% if items %}
+<article class='item col-xs-8'>
+<h3>{{ category }} Items ({{ items|length }} items)</h3>
+    {% for i in items %}
+     <div class='itemCat'><a href="{{ url_for('descItem', category=i.category.name, item=i.name) }}">{{ i.name }}</a></div>
+    {% endfor %}
+</article>
+{% endif %}
+
+</div>
+
+{% endblock %}

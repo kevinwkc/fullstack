@@ -1,0 +1,21 @@
+
+.header  > * {
+  display: inline;
+  
+}
+
+.greeting {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+}
+
+.itemCat {
+  display: block;
+}
+
+
+
+.category > a {
+  display: block;
+}
