@@ -1,5 +1,7 @@
 from google.appengine.ext import db
-     
+from helper import *
+from comment import Comment
+
 class Post(db.Model):
     user=db.StringProperty(required = True)
     subject = db.StringProperty(required = True)

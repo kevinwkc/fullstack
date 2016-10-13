@@ -1,4 +1,5 @@
 from google.appengine.ext import db
+from helper import *
 
 class Comment(db.Model):
     user=db.StringProperty(required = True)
