@@ -58,9 +58,10 @@ var ViewModel = function() {
 
     //anime when clicked
     self.heroMarker = function(p) {
+
         ko.utils.arrayForEach(self.marker(), function(m) {
 
-            if (m.title === p.name) {
+            if (m.id === p.id) {
 
                 google.maps.event.trigger(m, 'click');
 
