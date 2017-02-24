@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="utf-8">
 	<title>Weather Map</title>
 	
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
@@ -29,12 +30,12 @@
 	<div id="map"></div>
 
 	<!-- jQuery (necessary for Bootstrap’s JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script   src="http://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
 	<script src="script.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?callback=initMap&key=AIzaSyC3nmRdB-mgw_Z-SUUMSvVVxOtK_FwuQZY&libraries=drawing,places"
-	type="text/javascript"></script>
+	<script async src="https://maps.googleapis.com/maps/api/js?callback=initMap&key=AIzaSyC3nmRdB-mgw_Z-SUUMSvVVxOtK_FwuQZY&libraries=drawing,places"
+	type="text/javascript" onerror="googleError()"></script>
 </body>
 </html>
