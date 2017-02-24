@@ -1,3 +1,4 @@
 *.pyc
 *.db
 *.zip
+.DS_Store
