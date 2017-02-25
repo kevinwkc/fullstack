@@ -1,12 +1,13 @@
 'use strict';
 angular.module('confusionApp', [])
 
-    .controller('MenuController', ['$scope', 'menuFactory', function($scope, menuFactory) {
+         .controller('DishDetailController', ['$scope', '$routeParams', 'menuFactory', function($scope, $routeParams, menuFactory) {
         $scope.tab = 1;
         $scope.filtText = '';
         $scope.showDetails = false;
-
-        $scope.dishes = menuFactory.getDishes();
+        
+var dish= menuFactory.getDish(parseInt($routeParams.id,10));  
+        $scope.dish = dish;
 
 
         $scope.select = function(setTab) {
@@ -70,8 +71,4 @@ angular.module('confusionApp', [])
                 console.log($scope.feedback);
             }
         };
-    }])
-
-    .controller('DishDetailController', ['$scope', 'menuFactory', function($scope, menuFactory) {
-        $scope.dish = menuFactory.getDish(3);
     }]);
