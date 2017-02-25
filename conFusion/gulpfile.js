@@ -32,14 +32,12 @@ gulp.task('default', ['clean'], function() {
 });
     
 gulp.task('usemin',['jshint'], function () {
-  return gulp.src(['app/index.html', 'app/**/*'])
-
-    .pipe(usemin({
-      css:[minifycss(),rev()],
-      js: [ngannotate(),uglify(),rev()]
-    }))
-    
-    .pipe(gulp.dest('dist/'));
+  return gulp.src('./app/**/*.html')
+      .pipe(usemin({
+        css:[minifycss(),rev()],
+        js: [ngannotate(),uglify(),rev()]
+      }))
+      .pipe(gulp.dest('dist/'));
 });
 
 
