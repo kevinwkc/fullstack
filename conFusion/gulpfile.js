@@ -32,7 +32,8 @@ gulp.task('default', ['clean'], function() {
 });
     
 gulp.task('usemin',['jshint'], function () {
-  return gulp.src('./app/contactus.html')
+  return gulp.src('app/dishdetail.html')
+
     .pipe(usemin({
       css:[minifycss(),rev()],
       js: [ngannotate(),uglify(),rev()]
@@ -40,6 +41,8 @@ gulp.task('usemin',['jshint'], function () {
     
     .pipe(gulp.dest('dist/'));
 });
+
+
 
 // Images
 gulp.task('imagemin', function() {
@@ -77,7 +80,7 @@ gulp.task('browser-sync', ['default'], function () {
    browserSync.init(files, {
       server: {
          baseDir: "dist",
-         index: "contactus.html"
+         index: "dishdetail.html"
       }
    });
         // Watch any files in dist/, reload on change
