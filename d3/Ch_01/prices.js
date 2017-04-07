@@ -14,11 +14,12 @@ d3.csv("prices.csv")
       var maxDate = d3.max(data,function(d){ return d.month; });
 
       var y = d3.scaleLinear()
-                  .domain([0,max])
-                  .range([height,0]);
+                  .domain([0,max])    //input
+                  .range([height,0]); //output
       var x = d3.scaleTime()
                   .domain([minDate,maxDate])
-                  .range([0,width]); //d3.extend
+                  .range([0,width]); //d3.extend => [min, max]
+                  
       var yAxis = d3.axisLeft(y);
       var xAxis = d3.axisBottom(x);
 
@@ -30,7 +31,7 @@ d3.csv("prices.csv")
                   .attr("transform","translate("+margin.left+","+margin.top+")");
 
       var line = d3.line()
-                      .x(function(d){ return x(d.month); })
+                      .x(function(d){ return x(d.month); }) // scale to x-coord
                       .y(function(d){ return y(d.price); });
 
       chartGroup.append("path").attr("d",line(data));
