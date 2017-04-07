@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="EN">
+<head>
+  <meta charset="utf-8">
+  <title>Crossfilter example</title>
+</head>
+<body>
+  <script type="text/javascript" src="crossfilter.js"></script>
+
+  <script type="text/javascript">
+function print_filter(filter) {
+    var f=eval(filter);
+    if (typeof(f.length) != "undefined") {}else{}
+    if (typeof(f.top) != "undefined") {f=f.top(Infinity);}else{}
+    if (typeof(f.dimension) != "undefined") {f=f.dimension(function(d) { return "";}).top(Infinity);}else{}
+    console.log(filter+"("+f.length+") = "+JSON.stringify(f).replace("[","[\n\t").replace(/}\,/g,"},\n\t").replace("]","\n]"));
+}
+  var data = [
+    {date: "2011-11-14T16:17:54Z", quantity: 2, total: 190, tip: 100, type: "tab"},
+    {date: "2011-11-14T16:20:19Z", quantity: 2, total: 190, tip: 100, type: "tab"},
+    {date: "2011-11-14T16:28:54Z", quantity: 1, total: 300, tip: 200, type: "visa"},
+    {date: "2011-11-14T16:30:43Z", quantity: 2, total: 90, tip: 0, type: "tab"},
+    {date: "2011-11-14T16:48:46Z", quantity: 2, total: 90, tip: 0, type: "tab"},
+    {date: "2011-11-14T16:53:41Z", quantity: 2, total: 90, tip: 0, type: "tab"},
+    {date: "2011-11-14T16:54:06Z", quantity: 1, total: 100, tip: 0, type: "cash"},
+    {date: "2011-11-14T16:58:03Z", quantity: 2, total: 90, tip: 0, type: "tab"},
+    {date: "2011-11-14T17:07:21Z", quantity: 2, total: 90, tip: 0, type: "tab"},
+    {date: "2011-11-14T17:22:59Z", quantity: 2, total: 90, tip: 0, type: "tab"},
+    {date: "2011-11-14T17:25:45Z", quantity: 2, total: 200, tip: 0, type: "cash"},
+    {date: "2011-11-14T17:29:52Z", quantity: 1, total: 200, tip: 100, type: "visa"}
+  ];
+  
+  //parse string into Date
+  data.forEach(function(d) {
+    var tempDate=new Date(d.date);
+    d.date=tempDate; 
+  });
+  
+  var facts = crossfilter(data); //index our dataset
+  /*
+  crossfilter command:
+  -----------------------
+  size(): console log to debug
+  remove(): print_filter to debug
+  add(): print_filter to debug
+  groupAll()
+  dimension(): print_filter to debug
+  */
+  
+  console.log(facts.size()); 
+  
+  //adding new data
+  var newData=[{date: "2011-11-14T17:30:54Z", quantity: 2, total: 190, tip: 100, type: "tab"}];
+  facts.add(newData);
+  //facts.remove(); //remove all rows
+   
+  console.log(facts); //cannot see the actually data in facts
+  print_filter(facts); //see actual data
+  print_filter('facts'); //given variable name  facts
+  
+  console.log('facts.groupAll().value(): '+facts.groupAll().value());
+  console.log('facts.groupAll().reduceCount().value(): '+facts.groupAll().reduceCount().value());
+  console.log('facts.groupAll().reduceSum().value(): '+facts.groupAll().reduceSum(function(d){return d.total;}).value());
+
+  //dimension is derived variable
+  var tipDimension = facts.dimension(function(d){console.log("dimension: "+d); return d.tip;}); 
+  //run for each row  
+  console.log(tipDimension.bottom(3));
+      
+  var dateDimension=facts.dimension(function(d){
+  /* better to convert before here
+    var p = new Date(d.date); //Date(99,3,4) 1999, April 5
+    return d.getMonth()+"-"+d.getFullYear();
+  */
+    return d.date;
+  });
+  
+  var scatterDimension = facts.dimension(function(d){ 
+    return [d.total,d.tip];
+  });
+  
+  var typeDimension = facts.dimension(function(d){console.log("dimension: "+d); return d.type;});
+    
+  console.log(typeDimension.top(3)); //sorting then top 3 result  only
+  
+  //dimension is expensive
+  //typeDimension.dispose(); //to free up space
+  //delete typeDimension var to prevent unexpected result
+  
+  //SQL Group by
+  var typeGroup=typeDimension.group();
+  print_filter(typeGroup); //key:value; key as group d.type; value as row count by group
+  
+  print_filter(typeGroup.all()); //ascending order by key
+   
+  typeGroup=typeDimension.group(function(d){return d.substring(0,1);}); //group by first character
+   print_filter(typeGroup); 
+  </script>
+
+</body>
+</html>
