@@ -35,6 +35,7 @@ function print_filter(filter) {
     var tempDate=new Date(d.date);
     d.date=tempDate; 
   });
+
   
   var facts = crossfilter(data); //index our dataset
   /*
@@ -49,9 +50,10 @@ function print_filter(filter) {
   
   console.log(facts.size()); 
   
-  //adding new data
-  var newData=[{date: "2011-11-14T17:30:54Z", quantity: 2, total: 190, tip: 100, type: "tab"}];
-  facts.add(newData);
+  //adding new data, since we have change date to Date datatype, we won't add it for now.
+  //var newData=[{date: "2011-11-14T17:30:54Z", quantity: 2, total: 190, tip: 100, type: "tab"}];
+  //facts.add(newData);
+  
   //facts.remove(); //remove all rows
    
   console.log(facts); //cannot see the actually data in facts
@@ -63,18 +65,6 @@ function print_filter(filter) {
   console.log('facts.groupAll().reduceSum().value(): '+facts.groupAll().reduceSum(function(d){return d.total;}).value());
 
   //dimension is derived variable
-  var tipDimension = facts.dimension(function(d){console.log("dimension: "+d); return d.tip;}); 
-  //run for each row  
-  console.log(tipDimension.bottom(3));
-      
-  var dateDimension=facts.dimension(function(d){
-  /* better to convert before here
-    var p = new Date(d.date); //Date(99,3,4) 1999, April 5
-    return d.getMonth()+"-"+d.getFullYear();
-  */
-    return d.date;
-  });
-  
   var scatterDimension = facts.dimension(function(d){ 
     return [d.total,d.tip];
   });
@@ -95,6 +85,72 @@ function print_filter(filter) {
    
   typeGroup=typeDimension.group(function(d){return d.substring(0,1);}); //group by first character
    print_filter(typeGroup); 
+   
+   
+  //time series  by hour
+  var dateDimension=facts.dimension(function(d){
+  /* better to convert before here
+    var p = new Date(d.date); //Date(99,3,4) 1999, April 5
+    return d.getMonth()+"-"+d.getFullYear();
+  */
+    return d.date;
+
+  });
+  console.log(dateDimension.top(3)); 
+  var dateGroup = dateDimension.group(function(d){    
+    console.log(d);
+    return d.getHours();
+  });
+  
+  print_filter(dateGroup);
+  
+  //groupAll() for summary
+  //facts.groupAll().reduce() will change dynamic; where dim.groupAll() won't change when filter
+  console.log(facts.groupAll().reduceSum(function(d){return d.total;}).value());             
+  console.log(typeDimension.groupAll().reduceSum(function(d){return d.total;}).value()); 
+  
+  //groupAll() runs reduceCount() by default
+  
+  //filtering  - crossfilter == 1 filter for all dimension!!!
+  var totalDimension=facts.dimension(function(d){return d.total;});
+  //print_filter('totalDimension.filterExact(200)');
+  
+  var tipDimension = facts.dimension(function(d){ return d.tip;}); 
+  //run for each row  
+  //we have 3 group 0,100,200 for tip; value for rowCount() by default
+  print_filter(tipDimension.group());  
+  //console.log("bottom:"+tipDimension.bottom(3));
+  
+  //null same as 0
+  print_filter('tipDimension.filterExact(null)');
+  print_filter('tipDimension.filterExact(0)'); //only the last filter in same dimension will do the filter and overwrite any previous filter
+
+  print_filter('tipDimension.filter(0)');    
+  //this doesnt do any filter!
+  print_filter('tipDimension.filter(null)');
+  //reset filter, return all rows
+  print_filter('tipDimension.filterAll()');
+
+  totalDimension.filterRange([105,300]); //x >=105 & x < 300
+  print_filter('facts');
+  typeDimension.filterRange(['tab', 'viz']); //to include visa because visa < viz
+  print_filter('facts');
+  
+
+  totalDimension.filterFunction(function(d) {
+    return 0 < d && d < 100 || 200 < d && d<=300;
+  });
+  print_filter('facts');
+  console.log(facts.groupAll().value());  //7 
+  console.log(dateDimension.groupAll().value());  //7
+  console.log(totalDimension.groupAll().value()); //10  diff number because active filter ignore filter place in own dimension - total=190,100
+  console.log(tipDimension.groupAll().value()); //7
+  console.log(scatterDimension.groupAll().value());  //7
+  
+  //remove the record that matched the filter
+  facts.remove();
+  totalDimension.filterAll();
+  print_filter('facts');
   </script>
 
 </body>
